@@ -11,7 +11,9 @@
 
 package org.usfirst.frc3925.Bot2015.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+
 import org.usfirst.frc3925.Bot2015.Robot;
 
 /**
@@ -34,6 +36,34 @@ public class  DefaultDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+    	Joystick joystick = Robot.oi.getxbox();
+    	
+    	double leftXAxis, leftYAxis, rightXAxis, rightYAxis;
+    	
+    	double leftMotorSpeed, rightMotorSpeed;
+    	
+    	double moveValue = leftYAxis;
+    	double rotateValue = rightXAxis;
+    	
+    	if(moveValue > 0.0){
+    		if(rotateValue > 0.0){
+    			leftMotorSpeed = moveValue - rotateValue;
+    			rightMotorSpeed = Math.max(moveValue, rotateValue);
+    		}else {
+    			rightMotorSpeed = moveValue + rotateValue;
+    			leftMotorSpeed = Math.max(moveValue, -rotateValue);
+    		}
+    	}else {
+    		if(rotateValue > 0.0){
+    			rightMotorSpeed = moveValue + rotateValue;
+    			leftMotorSpeed = -Math.max(-moveValue, rotateValue);
+    		}else {
+    			leftMotorSpeed = moveValue - rotateValue;
+    			rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
+    		}
+    	}
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
