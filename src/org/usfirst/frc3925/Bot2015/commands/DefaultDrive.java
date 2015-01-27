@@ -43,6 +43,15 @@ public class  DefaultDrive extends Command {
     	double moveValue = joystick.getRawAxis(1);
     	double rotateValue = joystick.getRawAxis(4);
     	
+    	if (Math.abs(moveValue) > 0.2 || Math.abs(rotateValue) > 0.2) {
+			joystick.setRumble(Joystick.RumbleType.kLeftRumble, (float) Math.abs(moveValue));
+			joystick.setRumble(Joystick.RumbleType.kRightRumble, (float) Math.abs(rotateValue));
+		} else {
+			joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0f);
+			joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
+
+		}
+    	
     	if(moveValue > 0.0){
     		if(rotateValue > 0.0){
     			leftMotorSpeed = moveValue - rotateValue;
