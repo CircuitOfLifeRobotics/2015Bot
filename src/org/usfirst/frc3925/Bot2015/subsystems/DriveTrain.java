@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -43,9 +44,19 @@ public class DriveTrain extends Subsystem {
     	setDefaultCommand(new DefaultDrive());
     	
     	leftDrivePIDController = new PIDController(1, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController.setAbsoluteTolerance(.2d);
+    	leftDrivePIDController.setOutputRange(-1, 1);
+    	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
+
     	rightDrivePIDController = new PIDController(1, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController.setAbsoluteTolerance(.2d);
+    	rightDrivePIDController.setOutputRange(-1, 1);
+    	rightDrivePIDController.setContinuous(false);
     	rightDrivePIDController.enable();
+    	
+    	LiveWindow.addActuator("DriveTrain", "LeftPIDController", leftDrivePIDController);
+    	LiveWindow.addActuator("DriveTrain", "RightPIDController", rightDrivePIDController);
     }
     
     public void setGear(Gear g) {
@@ -57,7 +68,6 @@ public class DriveTrain extends Subsystem {
     			driveShiftSolenoid.set(DoubleSolenoid.Value.kReverse);
     		}
     		SmartDashboard.putBoolean("HighGear",g == Gear.HIGH);
-    		SmartDashboard.putString("HighGear2", g.toString());
     		currentGear = g;
     	}
     }
