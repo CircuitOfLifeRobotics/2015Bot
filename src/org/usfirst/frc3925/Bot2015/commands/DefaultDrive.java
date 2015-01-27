@@ -23,7 +23,9 @@ import com.ni.vision.NIVision;
  */
 public class  DefaultDrive extends Command {
 
-	private static final double DEADZONE = .01d;
+	private static final double DEADZONE = .2 * .2,
+			SPEED_LOW_GEAR = 24, //in in/s
+			SPEED_HIGH_GEAR = 48; //in in/s
 	
     public DefaultDrive() {
         requires(Robot.driveTrain);

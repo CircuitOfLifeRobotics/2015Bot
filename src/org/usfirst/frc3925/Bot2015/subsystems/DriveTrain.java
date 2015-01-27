@@ -46,14 +46,12 @@ public class DriveTrain extends Subsystem {
     	leftDrivePIDController = new PIDController(.01, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
-    	leftDrivePIDController.setInputRange(-60, 60);
     	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
 
     	rightDrivePIDController = new PIDController(.01, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
-    	rightDrivePIDController.setInputRange(-6/*distance per rev*/ * 10 /*revolutions*/, 6/*distance per rev*/ * 10 /*revolutions*/);
     	rightDrivePIDController.setContinuous(false);
     	rightDrivePIDController.enable();
     	
@@ -74,9 +72,21 @@ public class DriveTrain extends Subsystem {
     	}
     }
     
+    public Gear getGear() {
+    	return currentGear;
+    }
+    
+    /**
+     * sets motor speeds in in/s.
+     * 
+     * @param left speed of left side in in/s
+     * @param right speed of right side in in/s
+     */
     public void setMotorSpeeds(double left, double right) {
-    	leftDrivePIDController.setSetpoint(left * 60);
-    	rightDrivePIDController.setSetpoint(right * 60);
+    	// with 4 inch diameter wheels, 0.09817477 inches / tick or 0.009375 revolutions
+    	// math: ((4*pi)/128)* 1 / 1.2 /128
+    	leftDrivePIDController.setSetpoint(left);
+    	rightDrivePIDController.setSetpoint(right);
     }
     
     public static enum Gear {
