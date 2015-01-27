@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -42,7 +43,9 @@ public class DriveTrain extends Subsystem {
     	setDefaultCommand(new DefaultDrive());
     	
     	leftDrivePIDController = new PIDController(1, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController.enable();
     	rightDrivePIDController = new PIDController(1, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController.enable();
     }
     
     public void setGear(Gear g) {
@@ -53,6 +56,8 @@ public class DriveTrain extends Subsystem {
     		} else { // LOW
     			driveShiftSolenoid.set(DoubleSolenoid.Value.kReverse);
     		}
+    		SmartDashboard.putBoolean("HighGear",g == Gear.HIGH);
+    		SmartDashboard.putString("HighGear2", g.toString());
     		currentGear = g;
     	}
     }
