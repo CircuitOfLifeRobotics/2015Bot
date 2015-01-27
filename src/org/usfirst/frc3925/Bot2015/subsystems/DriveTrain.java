@@ -46,12 +46,14 @@ public class DriveTrain extends Subsystem {
     	leftDrivePIDController = new PIDController(1, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
+    	leftDrivePIDController.setInputRange(-60, 60);
     	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
 
     	rightDrivePIDController = new PIDController(1, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
+    	rightDrivePIDController.setInputRange(-6/*distance per rev*/ * 10 /*revolutions*/, 6/*distance per rev*/ * 10 /*revolutions*/);
     	rightDrivePIDController.setContinuous(false);
     	rightDrivePIDController.enable();
     	
@@ -73,12 +75,17 @@ public class DriveTrain extends Subsystem {
     }
     
     public void setMotorSpeeds(double left, double right) {
-    	leftDrivePIDController.setSetpoint(left);
-    	rightDrivePIDController.setSetpoint(right);
+    	leftDrivePIDController.setSetpoint(left * 60);
+    	rightDrivePIDController.setSetpoint(right * 60);
     }
     
     public static enum Gear {
     	HIGH, LOW
     }
+
+	public void enable() {
+		leftDrivePIDController.enable();
+		rightDrivePIDController.enable();
+	}
 }
 

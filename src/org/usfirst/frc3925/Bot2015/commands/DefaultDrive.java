@@ -33,6 +33,8 @@ public class  DefaultDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+
+    	Robot.driveTrain.enable();
     	
     	Joystick joystick = Robot.oi.getxbox();
     	
