@@ -23,6 +23,8 @@ import com.ni.vision.NIVision;
  */
 public class  DefaultDrive extends Command {
 
+	private static final double DEADZONE = .01d;
+	
     public DefaultDrive() {
         requires(Robot.driveTrain);
     }
@@ -43,14 +45,10 @@ public class  DefaultDrive extends Command {
     	double moveValue = joystick.getRawAxis(1);
     	double rotateValue = joystick.getRawAxis(4);
     	
-    	if (Math.abs(moveValue) > 0.2 || Math.abs(rotateValue) > 0.2) {
-			joystick.setRumble(Joystick.RumbleType.kLeftRumble, (float) Math.abs(moveValue));
-			joystick.setRumble(Joystick.RumbleType.kRightRumble, (float) Math.abs(rotateValue));
-		} else {
-			joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0f);
-			joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
-
-		}
+    	if (moveValue*moveValue + rotateValue*rotateValue < DEADZONE) {
+    		moveValue = 0;
+    		rotateValue = 0;
+    	}
     	
     	if(moveValue > 0.0){
     		if(rotateValue > 0.0){

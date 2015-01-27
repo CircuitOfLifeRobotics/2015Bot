@@ -43,14 +43,14 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
     	setDefaultCommand(new DefaultDrive());
     	
-    	leftDrivePIDController = new PIDController(1, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController = new PIDController(.01, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setInputRange(-60, 60);
     	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
 
-    	rightDrivePIDController = new PIDController(1, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController = new PIDController(.01, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setInputRange(-6/*distance per rev*/ * 10 /*revolutions*/, 6/*distance per rev*/ * 10 /*revolutions*/);
