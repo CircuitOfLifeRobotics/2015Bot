@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc3925.Bot2015.Robot;
+import org.usfirst.frc3925.Bot2015.subsystems.DriveTrain;
 
 import com.ni.vision.NIVision;
 
@@ -24,70 +25,83 @@ import com.ni.vision.NIVision;
 public class  DefaultDrive extends Command {
 
 	private static final double DEADZONE = .2 * .2,
-			SPEED_LOW_GEAR = 24, //in in/s
-			SPEED_HIGH_GEAR = 48; //in in/s
-	
-    public DefaultDrive() {
-        requires(Robot.driveTrain);
-    }
+			SPEED_LOW_GEAR = 60, //in in/s
+			SPEED_HIGH_GEAR = 120; //in in/s
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+	public DefaultDrive() {
+		requires(Robot.driveTrain);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+	// Called just before this Command runs the first time
+	protected void initialize() {
+	}
 
-    	Robot.driveTrain.enable();
-    	
-    	Joystick joystick = Robot.oi.getxbox();
-    	
-    	double leftMotorSpeed, rightMotorSpeed;
-    	
-    	double moveValue = joystick.getRawAxis(1);
-    	double rotateValue = joystick.getRawAxis(4);
-    	
-    	if (moveValue*moveValue + rotateValue*rotateValue < DEADZONE) {
-    		moveValue = 0;
-    		rotateValue = 0;
-    	}
-    	
-    	if(moveValue > 0.0){
-    		if(rotateValue > 0.0){
-    			leftMotorSpeed = moveValue - rotateValue;
-    			rightMotorSpeed = Math.max(moveValue, rotateValue);
-    		}else {
-    			rightMotorSpeed = moveValue + rotateValue;
-    			leftMotorSpeed = Math.max(moveValue, -rotateValue);
-    		}
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+
+		Robot.driveTrain.enable();
+
+		Joystick joystick = Robot.oi.getxbox();
+
+		double leftMotorSpeed, rightMotorSpeed;
+
+		double moveValue = joystick.getRawAxis(1);
+		double rotateValue = joystick.getRawAxis(4);
+
+		if (moveValue*moveValue + rotateValue*rotateValue < DEADZONE) {
+			moveValue = 0;
+			rotateValue = 0;
+		}
+
+		if(moveValue > 0.0){
+			if(rotateValue > 0.0){
+				leftMotorSpeed = moveValue - rotateValue;
+				rightMotorSpeed = Math.max(moveValue, rotateValue);
+			}else {
+				rightMotorSpeed = moveValue + rotateValue;
+				leftMotorSpeed = Math.max(moveValue, -rotateValue);
+			}
+		}else {
+			if(rotateValue > 0.0){
+				rightMotorSpeed = moveValue + rotateValue;
+				leftMotorSpeed = -Math.max(-moveValue, rotateValue);
+			}else {
+				leftMotorSpeed = moveValue - rotateValue;
+				rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
+			}
+		}
+
+		if (Robot.driveTrain.getGear() == DriveTrain.Gear.LOW) {
+			Robot.driveTrain.setMotorSpeeds(SPEED_LOW_GEAR * leftMotorSpeed, SPEED_LOW_GEAR * rightMotorSpeed);
+		} else {
+			Robot.driveTrain.setMotorSpeeds(SPEED_HIGH_GEAR * leftMotorSpeed, SPEED_HIGH_GEAR * rightMotorSpeed);
+		}
+		
+		if(joystick.getRawButton(1)){
+    		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 1.0f);
+    		joystick.setRumble(Joystick.RumbleType.kRightRumble, 1.0f);
     	}else {
-    		if(rotateValue > 0.0){
-    			rightMotorSpeed = moveValue + rotateValue;
-    			leftMotorSpeed = -Math.max(-moveValue, rotateValue);
-    		}else {
-    			leftMotorSpeed = moveValue - rotateValue;
-    			rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
-    		}
+    		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0f);
+    		joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
     	}
     	
-    	Robot.driveTrain.setMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
-    	
     }
+		
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return false;
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	// Called once after isFinished returns true
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	protected void end() {
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	
-    	Robot.driveTrain.setMotorSpeeds(0, 0);
-    	
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+
+		Robot.driveTrain.setMotorSpeeds(0, 0);
+
+	}
 }
