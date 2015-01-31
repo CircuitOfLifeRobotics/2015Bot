@@ -24,9 +24,9 @@ import com.ni.vision.NIVision;
  */
 public class  DefaultDrive extends Command {
 
-	private static final double DEADZONE = .2 * .2,
-			SPEED_LOW_GEAR = 60, //in in/s
-			SPEED_HIGH_GEAR = 120; //in in/s
+	private static final double DEADZONE = .4 * .4,
+			SPEED_LOW_GEAR = 240, //in in/s    SUBJECT TO CHANGE
+			SPEED_HIGH_GEAR = 480; //in in/s   SUBJECT TO CHANGE
 
 	public DefaultDrive() {
 		requires(Robot.driveTrain);
@@ -42,17 +42,20 @@ public class  DefaultDrive extends Command {
 		Robot.driveTrain.enable();
 
 		Joystick joystick = Robot.oi.getxbox();
-
+		
+		//Dem varbles
 		double leftMotorSpeed, rightMotorSpeed;
 
 		double moveValue = joystick.getRawAxis(1);
 		double rotateValue = joystick.getRawAxis(4);
-
+		
+		//Implements a deadzone
 		if (moveValue*moveValue + rotateValue*rotateValue < DEADZONE) {
 			moveValue = 0;
 			rotateValue = 0;
 		}
-
+		
+		//Calculates motor powers for arcade drive
 		if(moveValue > 0.0){
 			if(rotateValue > 0.0){
 				leftMotorSpeed = moveValue - rotateValue;
@@ -70,13 +73,15 @@ public class  DefaultDrive extends Command {
 				rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
 			}
 		}
-
+		
+		//Drive motors based on gear state and previous calculations
 		if (Robot.driveTrain.getGear() == DriveTrain.Gear.LOW) {
 			Robot.driveTrain.setMotorSpeeds(SPEED_LOW_GEAR * leftMotorSpeed, SPEED_LOW_GEAR * rightMotorSpeed);
 		} else {
 			Robot.driveTrain.setMotorSpeeds(SPEED_HIGH_GEAR * leftMotorSpeed, SPEED_HIGH_GEAR * rightMotorSpeed);
 		}
 		
+		//Rumbles joystick when button "X" is pressed
 		if(joystick.getRawButton(1)){
     		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 1.0f);
     		joystick.setRumble(Joystick.RumbleType.kRightRumble, 1.0f);

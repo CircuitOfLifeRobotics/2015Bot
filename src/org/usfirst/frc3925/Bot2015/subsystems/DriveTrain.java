@@ -43,13 +43,13 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
     	setDefaultCommand(new DefaultDrive());
     	
-    	leftDrivePIDController = new PIDController(.005, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController = new PIDController(.001, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
 
-    	rightDrivePIDController = new PIDController(.005, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController = new PIDController(.001, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setContinuous(false);
@@ -86,7 +86,7 @@ public class DriveTrain extends Subsystem {
     	// with 4 inch diameter wheels, 0.09817477 inches / tick or 0.009375 revolutions
     	// math: ((4*pi)/128)* 1 / 1.2 /128
     	leftDrivePIDController.setSetpoint(left);
-    	rightDrivePIDController.setSetpoint(right);
+    	rightDrivePIDController.setSetpoint(-right);
     }
     
     public static enum Gear {
