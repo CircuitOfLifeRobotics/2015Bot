@@ -11,13 +11,11 @@
 
 package org.usfirst.frc3925.Bot2015.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.usfirst.frc3925.Bot2015.Robot;
 import org.usfirst.frc3925.Bot2015.subsystems.DriveTrain;
 
-import com.ni.vision.NIVision;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -25,8 +23,8 @@ import com.ni.vision.NIVision;
 public class  DefaultDrive extends Command {
 
 	private static final double DEADZONE = .4 * .4,
-			SPEED_LOW_GEAR = 240, //in in/s    SUBJECT TO CHANGE
-			SPEED_HIGH_GEAR = 480; //in in/s   SUBJECT TO CHANGE
+			SPEED_LOW_GEAR = 480, //in in/s    SUBJECT TO CHANGE
+			SPEED_HIGH_GEAR = 960; //in in/s   SUBJECT TO CHANGE
 
 	public DefaultDrive() {
 		requires(Robot.driveTrain);
@@ -89,6 +87,8 @@ public class  DefaultDrive extends Command {
     		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0f);
     		joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
     	}
+		
+		
     	
     }
 		

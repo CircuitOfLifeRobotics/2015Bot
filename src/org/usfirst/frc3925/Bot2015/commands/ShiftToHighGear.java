@@ -11,10 +11,10 @@
 
 package org.usfirst.frc3925.Bot2015.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.usfirst.frc3925.Bot2015.Robot;
 import org.usfirst.frc3925.Bot2015.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *

@@ -11,12 +11,19 @@
 
 package org.usfirst.frc3925.Bot2015;
     
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType; import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
-import edu.wpi.first.wpilibj.smartdashboard.*;
-
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import java.util.Vector;
+import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -46,6 +53,8 @@ public class RobotMap {
     public static DigitalInput intaketoteCapturedSwitch;
     public static Relay intakebottomIntakeMotorRelay;
     public static Solenoid latcheslatchReleaseSolenoid;
+    
+    public static AxisCamera cameraAxisCamera;
 
 
     public static void init() {
@@ -115,6 +124,8 @@ public class RobotMap {
         
         latcheslatchReleaseSolenoid = new Solenoid(1, 2);
         LiveWindow.addActuator("Latches", "latchReleaseSolenoid", latcheslatchReleaseSolenoid);
+        
+        cameraAxisCamera = new AxisCamera("10.39.25.11");
         
 
     }
