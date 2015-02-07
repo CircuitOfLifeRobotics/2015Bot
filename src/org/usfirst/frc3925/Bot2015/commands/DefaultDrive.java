@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class  DefaultDrive extends Command {
 
 	private static final double DEADZONE = .4 * .4,
-			SPEED_LOW_GEAR = 480, //in in/s    SUBJECT TO CHANGE
-			SPEED_HIGH_GEAR = 960; //in in/s   SUBJECT TO CHANGE
+			SPEED_LOW_GEAR = 40, //in in/s    SUBJECT TO CHANGE
+			SPEED_HIGH_GEAR = 87; //in in/s   SUBJECT TO CHANGE
 
 	public DefaultDrive() {
 		requires(Robot.driveTrain);
@@ -88,8 +88,6 @@ public class  DefaultDrive extends Command {
     		joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
     	}
 		
-		
-    	
     }
 		
 	// Make this return true when this Command no longer needs to run execute()

@@ -12,12 +12,14 @@
 package org.usfirst.frc3925.Bot2015.subsystems;
 
 import org.usfirst.frc3925.Bot2015.RobotMap;
-import org.usfirst.frc3925.Bot2015.commands.*;
+import org.usfirst.frc3925.Bot2015.commands.DefaultDrive;
+import org.usfirst.frc3925.Bot2015.util.LoggedPIDSource;
 import org.usfirst.frc3925.Bot2015.util.SplitPIDOutput;
 
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,25 +40,43 @@ public class DriveTrain extends Subsystem {
     PIDController leftDrivePIDController;
     PIDController rightDrivePIDController;
     
+    PIDController leftDrivePIDControllerAutonomous;
+    PIDController rightDrivePIDControllerAutonomous;
+    
     Gear currentGear;
 
     public void initDefaultCommand() {
     	setDefaultCommand(new DefaultDrive());
     	
-    	leftDrivePIDController = new PIDController(.001, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setContinuous(false);
     	leftDrivePIDController.enable();
 
-    	rightDrivePIDController = new PIDController(.001, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setContinuous(false);
     	rightDrivePIDController.enable();
     	
+//    	leftDrivePIDControllerAutonomous = new PIDController(.001, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
+//    	leftDrivePIDControllerAutonomous.setAbsoluteTolerance(.2d);
+//    	leftDrivePIDControllerAutonomous.setOutputRange(-1, 1);
+//    	leftDrivePIDControllerAutonomous.setContinuous(false);
+//    	leftDrivePIDControllerAutonomous.disable();
+//
+//    	rightDrivePIDControllerAutonomous = new PIDController(.001, 0, 0, rightDriveEncoder, new SplitPIDOutput(rightFront, rightRear));
+//    	rightDrivePIDControllerAutonomous.setAbsoluteTolerance(.2d);
+//    	rightDrivePIDControllerAutonomous.setOutputRange(-1, 1);
+//    	rightDrivePIDControllerAutonomous.setContinuous(false);
+//    	rightDrivePIDControllerAutonomous.disable();
+    	
     	LiveWindow.addActuator("DriveTrain", "LeftPIDController", leftDrivePIDController);
     	LiveWindow.addActuator("DriveTrain", "RightPIDController", rightDrivePIDController);
+    	
+//    	LiveWindow.addActuator("AutonomousDriveTrain", "LeftPIDControllerAutonomous", leftDrivePIDControllerAutonomous);
+//    	LiveWindow.addActuator("AutonomousDriveTrain", "RightPIDControllerAutonomous", rightDrivePIDControllerAutonomous);
     }
     
     public void setGear(Gear g) {
@@ -85,9 +105,16 @@ public class DriveTrain extends Subsystem {
     public void setMotorSpeeds(double left, double right) {
     	// with 4 inch diameter wheels, 0.09817477 inches / tick or 0.009375 revolutions
     	// math: ((4*pi)/128)* 1 / 1.2 /128
+    	
+    	// new: 0.013089969 in : tick
     	leftDrivePIDController.setSetpoint(left);
     	rightDrivePIDController.setSetpoint(-right);
     }
+    
+//    public void setMotorDistance(double left, double right) {
+//    	leftDrivePIDControllerAutonomous.setSetpoint(0);
+//    	rightDrivePIDControllerAutonomous.setSetpoint(0);
+//    }
     
     public static enum Gear {
     	HIGH, LOW
@@ -97,5 +124,6 @@ public class DriveTrain extends Subsystem {
 		leftDrivePIDController.enable();
 		rightDrivePIDController.enable();
 	}
+	
 }
 
