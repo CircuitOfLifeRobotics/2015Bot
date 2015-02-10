@@ -29,13 +29,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveTrain extends Subsystem {
-    SpeedController rightRear = RobotMap.driveTrainrightRear;
+    //SpeedController rightRear = RobotMap.driveTrainrightRear;
     SpeedController rightFront = RobotMap.driveTrainrightFront;
     SpeedController leftFront = RobotMap.driveTrainleftFront;
     DoubleSolenoid driveShiftSolenoid = RobotMap.driveTraindriveShiftSolenoid;
     Encoder leftDriveEncoder = RobotMap.driveTrainleftDriveEncoder;
     Encoder rightDriveEncoder = RobotMap.driveTrainrightDriveEncoder;
-    SpeedController leftRear = RobotMap.driveTrainleftRear;
+    //SpeedController leftRear = RobotMap.driveTrainleftRear;
 
     PIDController leftDrivePIDController;
     PIDController rightDrivePIDController;
@@ -48,15 +48,25 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
     	setDefaultCommand(new RawDrive());
     	
-    	leftDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), new SplitPIDOutput(leftFront, leftRear));
-    	leftDrivePIDController.setAbsoluteTolerance(.2d);
-    	leftDrivePIDController.setOutputRange(-1, 1);
-    	leftDrivePIDController.setContinuous(false);
+    	//leftDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), new SplitPIDOutput(leftFront, leftRear));
+    	//leftDrivePIDController.setAbsoluteTolerance(.2d);
+    	//leftDrivePIDController.setOutputRange(-1, 1);
+    	//leftDrivePIDController.setContinuous(false);
+    	
+    	//		 /\
+    	//		/  \
+    	//		 ||
+    	//		 ||
+    	//		We are not using PID for teleOp now, and we no longer have splitPIDOutputs for each. Have fun reimplementing, future chump.
+    	//		 ||
+    	//		 ||
+    	//		\  /
+    	//		 \/
 
-    	rightDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), new SplitPIDOutput(rightFront, rightRear));
-    	rightDrivePIDController.setAbsoluteTolerance(.2d);
-    	rightDrivePIDController.setOutputRange(-1, 1);
-    	rightDrivePIDController.setContinuous(false);
+    	//rightDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), new SplitPIDOutput(rightFront, rightRear));
+    	//rightDrivePIDController.setAbsoluteTolerance(.2d);
+    	//rightDrivePIDController.setOutputRange(-1, 1);
+    	//rightDrivePIDController.setContinuous(false);
     	
 //    	leftDrivePIDControllerAutonomous = new PIDController(.001, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
 //    	leftDrivePIDControllerAutonomous.setAbsoluteTolerance(.2d);
@@ -111,10 +121,10 @@ public class DriveTrain extends Subsystem {
     
     public void setRawMotorSpeeds(double left, double right) {
     	leftFront.set(left);
-    	leftRear.set(left);
+    	//leftRear.set(left);     The new drivetrain has only one motor on each side now.
     	
     	rightFront.set(-right);
-    	rightRear.set(-right);
+    	//rightRear.set(-right);  The new drivetrain has only ond motor on each side now.
     }
     
 //    public void setMotorDistance(double left, double right) {

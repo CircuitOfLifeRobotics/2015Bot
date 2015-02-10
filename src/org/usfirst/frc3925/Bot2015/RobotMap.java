@@ -32,43 +32,51 @@ import edu.wpi.first.wpilibj.vision.AxisCamera;
  * floating around.
  */
 public class RobotMap {
-    public static SpeedController driveTrainrightRear;
+//	driveTrain
+    //public static SpeedController driveTrainrightRear;
     public static SpeedController driveTrainrightFront;
     public static SpeedController driveTrainleftFront;
     public static DoubleSolenoid driveTraindriveShiftSolenoid;
     public static Encoder driveTrainleftDriveEncoder;
     public static Encoder driveTrainrightDriveEncoder;
-    public static SpeedController driveTrainleftRear;
+    //public static SpeedController driveTrainleftRear;
+    //   .-.  0 0
+    //         +
+    //  µm    \_/
     
+//  elevator
     public static Encoder elevatorelevatorEncoder;
     public static SpeedController elevatorelevatorMotor;
     public static PIDController elevatorelevatorPIDController;
-    
-    public static Compressor generalPneumaticscompressor;
     public static SpeedController forkLiftforkliftLiftMotor;
     public static Encoder forkLiftforkliftLiftEncoder;
     public static PIDController forkLiftforkliftPIDController;
-    public static Relay intakeleftIntakeMotorRelay;
-    public static Relay intakerightIntakeMotorRelay;
-    public static DigitalInput intaketoteCapturedSwitch;
-    public static Relay intakebottomIntakeMotorRelay;
+    
+//  pneumatics
+    public static Compressor generalPneumaticscompressor;
     public static Solenoid latcheslatchReleaseSolenoid;
     
+//  intake
+    public static SpeedController intakeRollers;
+    public static SpeedController intakeWheelsRight;
+    public static SpeedController intakeWheelsLeft;
+    public static DigitalInput intakeLimitSwitch;
+    
+//  camera
     public static AxisCamera cameraAxisCamera;
 
-
     public static void init() {
-        driveTrainrightRear = new Talon(0);
-        LiveWindow.addActuator("DriveTrain", "rightRear", (Talon) driveTrainrightRear);
+        //driveTrainrightRear = new Talon(0);
+        //LiveWindow.addActuator("DriveTrain", "rightRear", (Talon) driveTrainrightRear);
         
-        driveTrainrightFront = new Talon(1);
+        driveTrainrightFront = new Talon(0);
         LiveWindow.addActuator("DriveTrain", "rightFront", (Talon) driveTrainrightFront);
         
-        driveTrainleftFront = new Talon(2);
+        driveTrainleftFront = new Talon(1);
         LiveWindow.addActuator("DriveTrain", "leftFront", (Talon) driveTrainleftFront);
         
-        driveTrainleftRear = new Talon(3);
-        LiveWindow.addActuator("DriveTrain", "leftRear", (Talon) driveTrainleftRear);
+        //driveTrainleftRear = new Talon(3);
+        //LiveWindow.addActuator("DriveTrain", "leftRear", (Talon) driveTrainleftRear);
 
         driveTraindriveShiftSolenoid = new DoubleSolenoid(1, 0, 1);      
         LiveWindow.addActuator("DriveTrain", "driveShiftSolenoid", driveTraindriveShiftSolenoid);
@@ -110,17 +118,17 @@ public class RobotMap {
         forkLiftforkliftPIDController.setContinuous(false); forkLiftforkliftPIDController.setAbsoluteTolerance(0.2); 
         forkLiftforkliftPIDController.setOutputRange(-1.0, 1.0);        
 
-        intakeleftIntakeMotorRelay = new Relay(0);
-        LiveWindow.addActuator("Intake", "leftIntakeMotorRelay", intakeleftIntakeMotorRelay);
+        intakeWheelsLeft = new Talon(2);
+        LiveWindow.addActuator("Intake", "leftIntakeMotorRelay", (Talon) intakeWheelsLeft);
         
-        intakerightIntakeMotorRelay = new Relay(1);
-        LiveWindow.addActuator("Intake", "rightIntakeMotorRelay", intakerightIntakeMotorRelay);
+        intakeWheelsRight = new Talon(3);
+        LiveWindow.addActuator("Intake", "rightIntakeMotorRelay", (Talon) intakeWheelsRight);
         
-        intaketoteCapturedSwitch = new DigitalInput(8);
-        LiveWindow.addSensor("Intake", "toteCapturedSwitch", intaketoteCapturedSwitch);
+        intakeLimitSwitch = new DigitalInput(8);
+        LiveWindow.addSensor("Intake", "toteCapturedSwitch", intakeLimitSwitch);
         
-        intakebottomIntakeMotorRelay = new Relay(2);
-        LiveWindow.addActuator("Intake", "bottomIntakeMotorRelay", intakebottomIntakeMotorRelay);
+        intakeRollers = new Talon(2);
+        LiveWindow.addActuator("Intake", "bottomIntakeMotorRelay", (Talon) intakeRollers);
         
         latcheslatchReleaseSolenoid = new Solenoid(1, 2);
         LiveWindow.addActuator("Latches", "latchReleaseSolenoid", latcheslatchReleaseSolenoid);
