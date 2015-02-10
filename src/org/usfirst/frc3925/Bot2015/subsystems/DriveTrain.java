@@ -12,7 +12,7 @@
 package org.usfirst.frc3925.Bot2015.subsystems;
 
 import org.usfirst.frc3925.Bot2015.RobotMap;
-import org.usfirst.frc3925.Bot2015.commands.DefaultDrive;
+import org.usfirst.frc3925.Bot2015.commands.RawDrive;
 import org.usfirst.frc3925.Bot2015.util.LoggedPIDSource;
 import org.usfirst.frc3925.Bot2015.util.SplitPIDOutput;
 
@@ -40,25 +40,23 @@ public class DriveTrain extends Subsystem {
     PIDController leftDrivePIDController;
     PIDController rightDrivePIDController;
     
-    PIDController leftDrivePIDControllerAutonomous;
-    PIDController rightDrivePIDControllerAutonomous;
+//    PIDController leftDrivePIDControllerAutonomous;
+//    PIDController rightDrivePIDControllerAutonomous;
     
     Gear currentGear;
 
     public void initDefaultCommand() {
-    	setDefaultCommand(new DefaultDrive());
+    	setDefaultCommand(new RawDrive());
     	
     	leftDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), new SplitPIDOutput(leftFront, leftRear));
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setContinuous(false);
-    	leftDrivePIDController.enable();
 
     	rightDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), new SplitPIDOutput(rightFront, rightRear));
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setContinuous(false);
-    	rightDrivePIDController.enable();
     	
 //    	leftDrivePIDControllerAutonomous = new PIDController(.001, 0, 0, leftDriveEncoder, new SplitPIDOutput(leftFront, leftRear));
 //    	leftDrivePIDControllerAutonomous.setAbsoluteTolerance(.2d);
@@ -111,6 +109,14 @@ public class DriveTrain extends Subsystem {
     	rightDrivePIDController.setSetpoint(-right);
     }
     
+    public void setRawMotorSpeeds(double left, double right) {
+    	leftFront.set(left);
+    	leftRear.set(left);
+    	
+    	rightFront.set(-right);
+    	rightRear.set(-right);
+    }
+    
 //    public void setMotorDistance(double left, double right) {
 //    	leftDrivePIDControllerAutonomous.setSetpoint(0);
 //    	rightDrivePIDControllerAutonomous.setSetpoint(0);
@@ -123,6 +129,11 @@ public class DriveTrain extends Subsystem {
 	public void enable() {
 		leftDrivePIDController.enable();
 		rightDrivePIDController.enable();
+	}
+	
+	public void disable() {
+		leftDrivePIDController.disable();
+		rightDrivePIDController.disable();
 	}
 	
 }

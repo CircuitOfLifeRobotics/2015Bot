@@ -79,15 +79,6 @@ public class  DefaultDrive extends Command {
 			Robot.driveTrain.setMotorSpeeds(SPEED_HIGH_GEAR * leftMotorSpeed, SPEED_HIGH_GEAR * rightMotorSpeed);
 		}
 		
-		//Rumbles joystick when button "X" is pressed
-		if(joystick.getRawButton(1)){
-    		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 1.0f);
-    		joystick.setRumble(Joystick.RumbleType.kRightRumble, 1.0f);
-    	}else {
-    		joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0f);
-    		joystick.setRumble(Joystick.RumbleType.kRightRumble, 0f);
-    	}
-		
     }
 		
 	// Make this return true when this Command no longer needs to run execute()
@@ -98,6 +89,8 @@ public class  DefaultDrive extends Command {
 	// Called once after isFinished returns true
 
 	protected void end() {
+		Robot.driveTrain.setMotorSpeeds(0, 0);
+		Robot.driveTrain.disable();
 	}
 
 	// Called when another command which requires one or more of the same
@@ -105,6 +98,7 @@ public class  DefaultDrive extends Command {
 	protected void interrupted() {
 
 		Robot.driveTrain.setMotorSpeeds(0, 0);
+		Robot.driveTrain.disable();
 
 	}
 }
