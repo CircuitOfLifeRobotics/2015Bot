@@ -35,4 +35,3 @@ public class Latches extends Subsystem {
     	latchReleaseSolenoid.set(engaged ? DoubleSolenoid.Value.kForward : DoubleSolenoid.Value.kReverse);
     }
 }
-

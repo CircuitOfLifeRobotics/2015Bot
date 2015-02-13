@@ -42,5 +42,16 @@ public class Elevator extends Subsystem {
     public void setElevatorSpeed(double speed) {
     	elevatorMotor.set(speed);
     }
+    
+    public void setElevatorHeight(double target) {
+    	final double maxEncoderValue = 9001; // IT'S OVER 9000!
+    	final double range = 10;
+    	boolean targetReached = false;
+    	double start = Robot.elevator.getEncoder();
+    	
+    	Robot.elevator.setElevatorSpeed((target-start)/maxEncoderValue);
+    	while(Math.abs(target-Robot.elevator.getEncoder()) >= range) {}
+    	Robot.elevator.setElevatorSpeed(0);
+    }
 }
 

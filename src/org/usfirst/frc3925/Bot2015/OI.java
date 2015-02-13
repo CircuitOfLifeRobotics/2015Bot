@@ -80,8 +80,8 @@ public class OI {
 	    
         rumbleBtn = new JoystickButton(xbox, 1);
         rumbleBtn.whileHeld(new Rumble());
-        
-        SmartDashboard.putData("SetElevatorHeight", new SetElevatorHeight());
+
+        SmartDashboard.putData("SetElevatorHeight", new SetElevatorHeight(0d));
 
         SmartDashboard.putData("DefaultDrive", new DefaultDrive());
 
