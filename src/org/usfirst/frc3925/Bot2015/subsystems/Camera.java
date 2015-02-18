@@ -16,7 +16,7 @@ public class Camera extends Subsystem {
     private AxisCamera axisCamera = RobotMap.cameraAxisCamera;
 
     public void initDefaultCommand() {
-        setDefaultCommand(new UpdateCamera());
+//        setDefaultCommand(new UpdateCamera());
     }
     
     public void getImage(NIVision.Image frame) {

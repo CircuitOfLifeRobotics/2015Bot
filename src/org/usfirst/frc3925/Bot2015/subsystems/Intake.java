@@ -18,7 +18,6 @@ public class Intake extends Subsystem {
     SpeedController rightIntakeMotor = RobotMap.intakerightIntakeMotor;
     public DigitalInput toteCapturedSwitch = RobotMap.intaketoteCapturedSwitch;
     SpeedController bottomIntakeMotor = RobotMap.intakebottomIntakeMotor;
-    Joystick joystick = Robot.oi.getxbox();
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -29,8 +28,8 @@ public class Intake extends Subsystem {
     }
     
     public void setIntakeMotorSpeeds(double speed) {
-    	leftIntakeMotor.set(speed);
-    	rightIntakeMotor.set(-speed);
+    	//leftIntakeMotor.set(speed);
+    	//rightIntakeMotor.set(-speed);
     	bottomIntakeMotor.set(speed);
     }
     

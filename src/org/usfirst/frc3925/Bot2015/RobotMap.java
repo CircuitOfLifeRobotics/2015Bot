@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
@@ -19,16 +20,41 @@ import edu.wpi.first.wpilibj.vision.AxisCamera;
  * floating around.
  */
 public class RobotMap {
-    public static SpeedController driveTrainrightRear;
-    public static SpeedController driveTrainrightFront;
-    public static SpeedController driveTrainleftFront;
+	
+	static final int
+		//Motor ports
+		LEFT_DRIVE_TALON_PORT = 0,
+		RIGHT_DRIVE_TALON_PORT = 1,
+		LIFT_TALON_PORT_RIGHT = 2,
+		LIFT_TALON_PORT_LEFT = 3,
+		LEFT_WHEEL_TALON_PORT = 4,
+		RIGHT_WHEEL_TALON_PORT = 5,
+		ROLLERS_TALON_PORT = 6,
+		
+		//Digital ports
+		LEFT_DRIVE_ENCODER_PORT_1 = 0,
+		LEFT_DRIVE_ENCODER_PORT_2 = 1,
+		RIGHT_DRIVE_ENCODER_PORT_1 = 2,
+		RIGHT_DRIVE_ENCODER_PORT_2 = 3,
+		LIFT_ENCODER_PORT_1 = 4,
+		LIFT_ENCODER_PORT_2 = 5,
+		TOTE_CAPTURED_MICROSWITCH_PORT = 9,
+		
+		//Solenoid ports
+		DRIVE_SHIFT_SOLENOID_PORT_1 = 0,
+		DRIVE_SHIFT_SOLENOID_PORT_2 = 1,
+		LATCHES_SOLENOID_PORT_1 = 2,
+		LATCHES_SOLENOID_PORT_2 = 3;
+	
+    public static Victor driveTrainrightFront;
+    public static Victor driveTrainleftFront;
     public static DoubleSolenoid driveTraindriveShiftSolenoid;
     public static Encoder driveTrainleftDriveEncoder;
     public static Encoder driveTrainrightDriveEncoder;
-    public static SpeedController driveTrainleftRear;
     
     public static Encoder elevatorelevatorEncoder;
-    public static SpeedController elevatorelevatorMotor;
+    public static SpeedController elevatorLeftElevatorMotor;
+    public static SpeedController elevatorRightElevatorMotor;
     public static PIDController elevatorelevatorPIDController;
     
     public static Compressor generalPneumaticscompressor;
@@ -45,47 +71,43 @@ public class RobotMap {
 
 
     public static void init() {
-//        driveTrainrightRear = new Talon(0);
-//        LiveWindow.addActuator("DriveTrain", "rightRear", (Talon) driveTrainrightRear);
+        driveTrainrightFront = new Victor(RIGHT_DRIVE_TALON_PORT);
+        LiveWindow.addActuator("DriveTrain", "rightFront", (Victor) driveTrainrightFront);
         
-        driveTrainrightFront = new Talon(0);
-        LiveWindow.addActuator("DriveTrain", "rightFront", (Talon) driveTrainrightFront);
+        driveTrainleftFront = new Victor(LEFT_DRIVE_TALON_PORT);
+        LiveWindow.addActuator("DriveTrain", "leftFront", (Victor) driveTrainleftFront);
         
-        driveTrainleftFront = new Talon(1);
-        LiveWindow.addActuator("DriveTrain", "leftFront", (Talon) driveTrainleftFront);
-        
-//        driveTrainleftRear = new Talon(3);
-//        LiveWindow.addActuator("DriveTrain", "leftRear", (Talon) driveTrainleftRear);
-
-        driveTraindriveShiftSolenoid = new DoubleSolenoid(1, 0, 1);      
+        driveTraindriveShiftSolenoid = new DoubleSolenoid(1, DRIVE_SHIFT_SOLENOID_PORT_1, DRIVE_SHIFT_SOLENOID_PORT_2);   
         LiveWindow.addActuator("DriveTrain", "driveShiftSolenoid", driveTraindriveShiftSolenoid);
         
-        driveTrainleftDriveEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+        driveTrainleftDriveEncoder = new Encoder(LEFT_DRIVE_ENCODER_PORT_1, LEFT_DRIVE_ENCODER_PORT_2, false, EncodingType.k4X);
         LiveWindow.addSensor("DriveTrain", "leftDriveEncoder", driveTrainleftDriveEncoder);
         driveTrainleftDriveEncoder.setDistancePerPulse(0.013089969);//was 0.09817477
         driveTrainleftDriveEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
         
-        driveTrainrightDriveEncoder = new Encoder(2, 3, false, EncodingType.k4X);
+        driveTrainrightDriveEncoder = new Encoder(RIGHT_DRIVE_ENCODER_PORT_1, RIGHT_DRIVE_ENCODER_PORT_2, false, EncodingType.k4X);
         LiveWindow.addSensor("DriveTrain", "rightDriveEncoder", driveTrainrightDriveEncoder);
         driveTrainrightDriveEncoder.setDistancePerPulse(0.013089969);//was 0.09817477
         driveTrainrightDriveEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
         
-        elevatorelevatorEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+        elevatorelevatorEncoder = new Encoder(LIFT_ENCODER_PORT_1, LIFT_ENCODER_PORT_2, false, EncodingType.k4X);
         LiveWindow.addSensor("Elevator", "elevatorEncoder", elevatorelevatorEncoder);
         elevatorelevatorEncoder.setDistancePerPulse(1.0);
         elevatorelevatorEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
-        elevatorelevatorMotor = new Talon(4);
-        LiveWindow.addActuator("Elevator", "elevatorMotor", (Talon) elevatorelevatorMotor);
+        elevatorLeftElevatorMotor = new Talon(LIFT_TALON_PORT_LEFT);
+        LiveWindow.addActuator("Elevator", "leftElevatorMotor", (Talon) elevatorLeftElevatorMotor);
+        elevatorRightElevatorMotor = new Talon(LIFT_TALON_PORT_RIGHT);
+        LiveWindow.addActuator("Elevator", "rightElevatorMotor", (Talon) elevatorRightElevatorMotor);
         
-        elevatorelevatorPIDController = new PIDController(1.0, 0.0, 0.0, 0.0, elevatorelevatorEncoder, elevatorelevatorMotor, 0.02);
+        elevatorelevatorPIDController = new PIDController(1.0, 0.0, 0.0, 0.0, elevatorelevatorEncoder, elevatorLeftElevatorMotor, 0.02);
         LiveWindow.addActuator("Elevator", "elevatorPIDController", elevatorelevatorPIDController);
         elevatorelevatorPIDController.setContinuous(false); elevatorelevatorPIDController.setAbsoluteTolerance(0.2); 
         elevatorelevatorPIDController.setOutputRange(-1.0, 1.0);        
 
         generalPneumaticscompressor = new Compressor(1);
+        	
         
-        
-        forkLiftforkliftLiftMotor = new Talon(5);
+        forkLiftforkliftLiftMotor = new Talon(8);
         LiveWindow.addActuator("ForkLift", "forkliftLiftMotor", (Talon) forkLiftforkliftLiftMotor);
         
         forkLiftforkliftLiftEncoder = new Encoder(6, 7, false, EncodingType.k4X);
@@ -95,21 +117,26 @@ public class RobotMap {
         forkLiftforkliftPIDController = new PIDController(1.0, 0.0, 0.0, 0.0, forkLiftforkliftLiftEncoder, forkLiftforkliftLiftMotor, 0.02);
         LiveWindow.addActuator("ForkLift", "forkliftPIDController", forkLiftforkliftPIDController);
         forkLiftforkliftPIDController.setContinuous(false); forkLiftforkliftPIDController.setAbsoluteTolerance(0.2); 
-        forkLiftforkliftPIDController.setOutputRange(-1.0, 1.0);        
-
-        intakeleftIntakeMotor = new Talon(0);
+        forkLiftforkliftPIDController.setOutputRange(-1.0, 1.0);
+        
+//		This line has/had problems  ||
+//									||
+//								   _||_
+//								   \  /
+//									\/
+        intakeleftIntakeMotor = new Talon(LEFT_WHEEL_TALON_PORT);
         LiveWindow.addActuator("Intake", "leftIntakeMotor", (Talon) intakeleftIntakeMotor);
         
-        intakerightIntakeMotor = new Talon(1);
+        intakerightIntakeMotor = new Talon(RIGHT_WHEEL_TALON_PORT);
         LiveWindow.addActuator("Intake", "rightIntakeMotor", (Talon) intakerightIntakeMotor);
         
-        intaketoteCapturedSwitch = new DigitalInput(8);
+        intaketoteCapturedSwitch = new DigitalInput(TOTE_CAPTURED_MICROSWITCH_PORT);
         LiveWindow.addSensor("Intake", "toteCapturedSwitch", intaketoteCapturedSwitch);
         
-        intakebottomIntakeMotor = new Talon(2);
+        intakebottomIntakeMotor = new Talon(ROLLERS_TALON_PORT);
         LiveWindow.addActuator("Intake", "bottomIntakeMotor", (Talon) intakebottomIntakeMotor);
         
-        latcheslatchReleaseSolenoid = new DoubleSolenoid(1, 3, 4);
+        latcheslatchReleaseSolenoid = new DoubleSolenoid(1, LATCHES_SOLENOID_PORT_1, LATCHES_SOLENOID_PORT_2);
         LiveWindow.addActuator("Latches", "latchReleaseSolenoid", latcheslatchReleaseSolenoid);
         
         cameraAxisCamera = new AxisCamera("10.39.25.11");

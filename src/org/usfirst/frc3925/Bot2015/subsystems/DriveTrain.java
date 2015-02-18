@@ -29,13 +29,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveTrain extends Subsystem {
-    SpeedController rightRear = RobotMap.driveTrainrightRear;
     SpeedController rightFront = RobotMap.driveTrainrightFront;
     SpeedController leftFront = RobotMap.driveTrainleftFront;
     DoubleSolenoid driveShiftSolenoid = RobotMap.driveTraindriveShiftSolenoid;
     Encoder leftDriveEncoder = RobotMap.driveTrainleftDriveEncoder;
     Encoder rightDriveEncoder = RobotMap.driveTrainrightDriveEncoder;
-    SpeedController leftRear = RobotMap.driveTrainleftRear;
 
     PIDController leftDrivePIDController;
     PIDController rightDrivePIDController;
@@ -48,12 +46,12 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
     	setDefaultCommand(new RawDrive());
     	
-    	leftDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), new SplitPIDOutput(leftFront, leftRear));
+    	leftDrivePIDController = new PIDController(1,0, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), leftFront);
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setContinuous(false);
 
-    	rightDrivePIDController = new PIDController(.001, 0.0001, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), new SplitPIDOutput(rightFront, rightRear));
+    	rightDrivePIDController = new PIDController(1, 0, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), rightFront);
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setContinuous(false);
@@ -111,16 +109,9 @@ public class DriveTrain extends Subsystem {
     
     public void setRawMotorSpeeds(double left, double right) {
     	leftFront.set(left);
-    	leftRear.set(left);
     	
     	rightFront.set(-right);
-    	rightRear.set(-right);
     }
-    
-//    public void setMotorDistance(double left, double right) {
-//    	leftDrivePIDControllerAutonomous.setSetpoint(0);
-//    	rightDrivePIDControllerAutonomous.setSetpoint(0);
-//    }
     
     public static enum Gear {
     	HIGH, LOW

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class  DoFloorToteIntake extends Command {
 	
 	final double toteHeight = 2000; // in encoder tick height
+	boolean intakeMotorsCalled = false;
 	
 	public DoFloorToteIntake() {
 		// Use requires() here to declare subsystem dependencies
@@ -19,11 +20,15 @@ public class  DoFloorToteIntake extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.elevator.setElevatorHeight(0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.elevator.setElevatorHeight(toteHeight);
+		if(!intakeMotorsCalled && Math.abs(0-Robot.elevator.getEncoder()) < 10) {
+			Robot.intake.setIntakeMotorSpeeds(1);
+			intakeMotorsCalled = true;
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -34,6 +39,7 @@ public class  DoFloorToteIntake extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.intake.setIntakeMotorSpeeds(0);
+		Robot.elevator.liftStack();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -18,15 +18,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
     Encoder elevatorEncoder = RobotMap.elevatorelevatorEncoder;
-    SpeedController elevatorMotor = RobotMap.elevatorelevatorMotor;
+    SpeedController leftElevatorMotor = RobotMap.elevatorLeftElevatorMotor;
+    SpeedController rightElevatorMotor = RobotMap.elevatorRightElevatorMotor;
 //    PIDController elevatorPIDController = RobotMap.elevatorelevatorPIDController;
-
+    
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-    	
-    	
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
@@ -40,7 +39,30 @@ public class Elevator extends Subsystem {
     }
     
     public void setElevatorSpeed(double speed) {
-    	elevatorMotor.set(speed);
+    	Joystick joystick = Robot.oi.getxbox();
+    	double maxHeight = 1000;
+    	double minHeight = 0;
+    	
+    	if(joystick.getRawButton(3)) {
+    		maxHeight = Robot.elevator.getEncoder();
+    	} if(joystick.getRawButton(4)) {
+    		minHeight = Robot.elevator.getEncoder();
+    	}
+    	
+    	//set limits
+		if(Robot.elevator.getEncoder() > maxHeight && speed < 0) {
+			//speed = 0;
+			//joystick.setRumble(Joystick.RumbleType.kLeftRumble, 1.0f);
+		}else { if(Robot.elevator.getEncoder() < minHeight && speed > 0) {
+			speed = 0;
+			joystick.setRumble(Joystick.RumbleType.kRightRumble, 1.0f);
+		}else {
+			joystick.setRumble(Joystick.RumbleType.kLeftRumble, 0.0f);
+			joystick.setRumble(Joystick.RumbleType.kRightRumble, 0.0f);
+		}}
+    	
+    	leftElevatorMotor.set(speed);
+    	rightElevatorMotor.set(speed);
     }
     
     public void setElevatorHeight(double target) {
@@ -52,6 +74,10 @@ public class Elevator extends Subsystem {
     	Robot.elevator.setElevatorSpeed((target-start)/maxEncoderValue);
     	while(Math.abs(target-Robot.elevator.getEncoder()) >= range) {}
     	Robot.elevator.setElevatorSpeed(0);
+    }
+    
+    public void liftStack() {
+    	Robot.elevator.liftStack();
     }
 }
 
