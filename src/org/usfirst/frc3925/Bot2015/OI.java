@@ -4,12 +4,12 @@ import org.usfirst.frc3925.Bot2015.commands.DefaultDrive;
 import org.usfirst.frc3925.Bot2015.commands.DoFloorToteIntake;
 import org.usfirst.frc3925.Bot2015.commands.DoHumanToteIntake;
 import org.usfirst.frc3925.Bot2015.commands.EjectStack;
+import org.usfirst.frc3925.Bot2015.commands.ElevatorTestCommand;
 import org.usfirst.frc3925.Bot2015.commands.EngageLatch;
 import org.usfirst.frc3925.Bot2015.commands.LiftStack;
 import org.usfirst.frc3925.Bot2015.commands.RawDrive;
 import org.usfirst.frc3925.Bot2015.commands.ReleaseLatch;
 import org.usfirst.frc3925.Bot2015.commands.Rumble;
-import org.usfirst.frc3925.Bot2015.commands.SetElevatorHeight;
 import org.usfirst.frc3925.Bot2015.commands.SetIntakeMotorSpeed;
 import org.usfirst.frc3925.Bot2015.commands.ShiftToHighGear;
 import org.usfirst.frc3925.Bot2015.commands.ShiftToLowGear;
@@ -56,46 +56,23 @@ public class OI {
     public Joystick xbox;
     public Joystick launchpad;
     
-    private JoystickButton shiftUp, shiftDown, rumbleBtn, elevatorUp, elevatorDown, intakeMotors, elevatorSet;
+    private JoystickButton shiftUp, shiftDown, rumbleBtn;
 
     public OI() {
-    	int elevatorHeight = 0;
-    	boolean btnReleased = true;
-    	boolean driveShiftState = false;
     	
         launchpad = new Joystick(1);
         
         xbox = new Joystick(0);
         
-        if(!driveShiftState && btnReleased) {
-        	shiftUp = new JoystickButton(xbox, 1);
-        	shiftUp.whenPressed(new ShiftToHighGear());
-        	driveShiftState = false;
-        	btnReleased = false;
-        }else {if(driveShiftState && btnReleased) {
-        	shiftDown = new JoystickButton(xbox, 1);
-        	shiftDown.whenPressed(new ShiftToLowGear());
-        	driveShiftState = true;
-        	btnReleased = false;
-        	}else {
-        		btnReleased = true;
-        	}
-        }
+        shiftUp = new JoystickButton(xbox, 1);
+    	shiftUp.whenPressed(new ShiftToHighGear());
+    	
+    	shiftDown = new JoystickButton(xbox, 2);
+    	shiftDown.whenPressed(new ShiftToLowGear());
 	    
-        rumbleBtn = new JoystickButton(xbox, 2);
+        rumbleBtn = new JoystickButton(xbox, 3);
         rumbleBtn.whileHeld(new Rumble());
         
-//        intakeMotors = new JoystickButton(xbox, 5);
-//        intakeMotors.whileHeld(new SetIntakeMotorSpeed());
-        
-//        elevatorUp = new JoystickButton(xbox, 2);
-//        elevatorUp.whenPressed(new (0100));
-//        
-//        elevatorDown = new JoystickButton(xbox, 3);
-//        elevatorDown.whenPressed(new SetElevatorHeight(0));
-        
-        SmartDashboard.putData("SetElevatorHeight", new SetElevatorHeight(0d));
-
         SmartDashboard.putData("DefaultDrive", new DefaultDrive());
 
         SmartDashboard.putData("DoFloorToteIntake", new DoFloorToteIntake());
@@ -116,6 +93,8 @@ public class OI {
         
         SmartDashboard.putData("RawDrive", new RawDrive());
 
+        SmartDashboard.putData("ElevatorTestCommand", new ElevatorTestCommand());
+        
     }
     
     public Joystick getxbox() {
@@ -125,6 +104,6 @@ public class OI {
     public Joystick getlaunchpad() {
         return launchpad;
     }
-
+    
 }
 

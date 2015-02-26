@@ -26,7 +26,7 @@ public class RawDrive extends Command {
     	                                                             
 		//Dem varbles                                                
 		double leftMotorSpeed, rightMotorSpeed;
-		double elevatorSpeed, intakeSpeed, fwdIntake, bckwdIntake;
+		double intakeSpeed, fwdIntake, bckwdIntake;
 		
 		//driveTrain stuff
 			//triggers = fwd + bckwd, right stick = left + right
@@ -38,7 +38,7 @@ public class RawDrive extends Command {
 				double rotateValue = joystick.getRawAxis(4);
 			
 			//Implements a deadzone
-			if (moveValue*moveValue + rotateValue*rotateValue < .16) {
+			if (moveValue*moveValue + rotateValue*rotateValue < .08) {
 				moveValue = 0;
 				rotateValue = 0;
 			}
@@ -62,7 +62,7 @@ public class RawDrive extends Command {
 				}
 			}
 			// "setRawMotorSpeeds" = w/o PID, "setMotorSpeeds" = with PID
-			Robot.driveTrain.enable();
+			//Robot.driveTrain.enable();
 			Robot.driveTrain.setRawMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
 		
 		//intake stuff
@@ -70,19 +70,13 @@ public class RawDrive extends Command {
 				fwdIntake = 1;
 			}else {
 				fwdIntake = 0;
-			}
-			if(joystick.getRawButton(6)) {
+			} if(joystick.getRawButton(6)) {
 				bckwdIntake = 1;
 			}else {
 				bckwdIntake = 0;
 			}
-			intakeSpeed = fwdIntake-bckwdIntake;
+			intakeSpeed = fwdIntake - bckwdIntake;
 			Robot.intake.setIntakeMotorSpeeds(intakeSpeed);
-		
-		//elevator stuff
-			elevatorSpeed = (joystick.getRawAxis(2)-joystick.getRawAxis(3))/2;
-			
-			Robot.elevator.setElevatorSpeed(elevatorSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

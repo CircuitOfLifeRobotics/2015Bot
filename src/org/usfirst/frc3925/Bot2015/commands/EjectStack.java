@@ -23,14 +23,11 @@ public class  EjectStack extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.elevator.setElevatorHeight(toteHeight);
-    	Robot.elevator.setLatches(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!totesReached && Math.abs(toteHeight-Robot.elevator.getEncoder()) < 10) {
-    		Robot.elevator.setElevatorHeight(0);
+    	if(!totesReached && Math.abs(toteHeight-Robot.elevator.getElevatorHeight()) < 10) {
     	}else{
     		if(totesReached) {
     			if(Robot.intake.isToteCaptured()) {

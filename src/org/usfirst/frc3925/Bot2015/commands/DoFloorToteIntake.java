@@ -20,12 +20,11 @@ public class  DoFloorToteIntake extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.elevator.setElevatorHeight(0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if(!intakeMotorsCalled && Math.abs(0-Robot.elevator.getEncoder()) < 10) {
+		if(!intakeMotorsCalled && Math.abs(0-Robot.elevator.getElevatorHeight()) < 10) {
 			Robot.intake.setIntakeMotorSpeeds(1);
 			intakeMotorsCalled = true;
 		}
@@ -39,7 +38,6 @@ public class  DoFloorToteIntake extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.intake.setIntakeMotorSpeeds(0);
-		Robot.elevator.liftStack();
 	}
 
 	// Called when another command which requires one or more of the same

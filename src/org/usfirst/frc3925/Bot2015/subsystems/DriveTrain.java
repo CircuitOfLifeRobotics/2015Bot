@@ -46,12 +46,12 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
     	setDefaultCommand(new RawDrive());
     	
-    	leftDrivePIDController = new PIDController(1,0, 0, new LoggedPIDSource("left encoder", leftDriveEncoder), leftFront);
+    	leftDrivePIDController = new PIDController(1,0, 0, RobotMap.driveTrainleftDriveEncoder, RobotMap.driveTrainleftFront);
     	leftDrivePIDController.setAbsoluteTolerance(.2d);
     	leftDrivePIDController.setOutputRange(-1, 1);
     	leftDrivePIDController.setContinuous(false);
 
-    	rightDrivePIDController = new PIDController(1, 0, 0, new LoggedPIDSource("right encoder", rightDriveEncoder), rightFront);
+    	rightDrivePIDController = new PIDController(1, 0, 0, RobotMap.driveTrainrightDriveEncoder, RobotMap.driveTrainrightFront);
     	rightDrivePIDController.setAbsoluteTolerance(.2d);
     	rightDrivePIDController.setOutputRange(-1, 1);
     	rightDrivePIDController.setContinuous(false);

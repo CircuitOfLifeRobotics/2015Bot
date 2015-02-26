@@ -1,5 +1,7 @@
 package org.usfirst.frc3925.Bot2015;
     
+import org.usfirst.frc3925.Bot2015.util.SplitPIDOutput;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -92,14 +94,14 @@ public class RobotMap {
         
         elevatorelevatorEncoder = new Encoder(LIFT_ENCODER_PORT_1, LIFT_ENCODER_PORT_2, false, EncodingType.k4X);
         LiveWindow.addSensor("Elevator", "elevatorEncoder", elevatorelevatorEncoder);
-        elevatorelevatorEncoder.setDistancePerPulse(1.0);
+        elevatorelevatorEncoder.setDistancePerPulse(1/2048d);
         elevatorelevatorEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
         elevatorLeftElevatorMotor = new Talon(LIFT_TALON_PORT_LEFT);
         LiveWindow.addActuator("Elevator", "leftElevatorMotor", (Talon) elevatorLeftElevatorMotor);
         elevatorRightElevatorMotor = new Talon(LIFT_TALON_PORT_RIGHT);
         LiveWindow.addActuator("Elevator", "rightElevatorMotor", (Talon) elevatorRightElevatorMotor);
         
-        elevatorelevatorPIDController = new PIDController(1.0, 0.0, 0.0, 0.0, elevatorelevatorEncoder, elevatorLeftElevatorMotor, 0.02);
+        elevatorelevatorPIDController = new PIDController(1.0, 0.0, 0.0, 0.0, elevatorelevatorEncoder, new SplitPIDOutput(elevatorLeftElevatorMotor, elevatorRightElevatorMotor), 0.02);
         LiveWindow.addActuator("Elevator", "elevatorPIDController", elevatorelevatorPIDController);
         elevatorelevatorPIDController.setContinuous(false); elevatorelevatorPIDController.setAbsoluteTolerance(0.2); 
         elevatorelevatorPIDController.setOutputRange(-1.0, 1.0);        
@@ -118,12 +120,7 @@ public class RobotMap {
         LiveWindow.addActuator("ForkLift", "forkliftPIDController", forkLiftforkliftPIDController);
         forkLiftforkliftPIDController.setContinuous(false); forkLiftforkliftPIDController.setAbsoluteTolerance(0.2); 
         forkLiftforkliftPIDController.setOutputRange(-1.0, 1.0);
-        
-//		This line has/had problems  ||
-//									||
-//								   _||_
-//								   \  /
-//									\/
+
         intakeleftIntakeMotor = new Talon(LEFT_WHEEL_TALON_PORT);
         LiveWindow.addActuator("Intake", "leftIntakeMotor", (Talon) intakeleftIntakeMotor);
         
