@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ElevatorTestCommand extends Command {
-
+	
+	final double MAX_HEIGHT = 5;
+	
     public ElevatorTestCommand() {
         requires(Robot.elevator);
     }
@@ -22,8 +24,13 @@ public class ElevatorTestCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double elevatorHeight = Robot.oi.xbox.getRawAxis(2);
-    	elevatorHeight = elevatorHeight;
-    	Robot.elevator.setElevatorSetPoint(elevatorHeight);
+    	elevatorHeight = elevatorHeight * 5;
+    	if(elevatorHeight > 5 || elevatorHeight < 0) {
+    	}else {
+    		Robot.elevator.setElevatorSetPoint(elevatorHeight);
+    	}
+    	
+    	SmartDashboard.putNumber("ElevatorHeight", elevatorHeight);
     }
 
     // Make this return true when this Command no longer needs to run execute()

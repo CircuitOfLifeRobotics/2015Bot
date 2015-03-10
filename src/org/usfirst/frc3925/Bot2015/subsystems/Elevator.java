@@ -1,6 +1,7 @@
 package org.usfirst.frc3925.Bot2015.subsystems;
 
 import org.usfirst.frc3925.Bot2015.RobotMap;
+import org.usfirst.frc3925.Bot2015.commands.ElevatorTestCommand;
 import org.usfirst.frc3925.Bot2015.commands.UpdateElevator;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Elevator extends Subsystem {
+	public final double MAXHEIGHT = 10;
     Encoder elevatorEncoder = RobotMap.elevatorelevatorEncoder;
     SpeedController leftElevatorMotor = RobotMap.elevatorLeftElevatorMotor;
     SpeedController rightElevatorMotor = RobotMap.elevatorRightElevatorMotor;
@@ -30,6 +32,7 @@ public class Elevator extends Subsystem {
     public double getElevatorHeight() {
     	return elevatorEncoder.getDistance();
     }
+    
     
     public void setElevatorSpeed(double speed) {
     	leftElevatorMotor.set(speed);
